@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: mydb
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: your_secure_password
+    depends_on:
+      - db
+      - redis
+
+  db:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    ports:
+      - '3306:3306'
+    environment:
+      // copy from .env.example file
+
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    environment:
+      REDIS_PASSWORD: your_secure_password
+    command: ["redis-server", "--requirepass", "your_secure_password"]

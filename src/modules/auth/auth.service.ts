@@ -136,10 +136,39 @@ export class AuthService {
         if (!user) throw new NotFoundException('User not found');
         const hashedPassword = await hashData(newPassword);
 
-        await this.userRepository.update(user._id, { password: hashedPassword });
-        await this.redisService.del(token);
+        /**
+         * step 1: update user password
+         * step 2: delete token from redis
+         * step 3: delete all sessions of the user
+         */
+        await Promise.all([
+            await this.userRepository.update(user._id, { password: hashedPassword }),
+            await this.redisService.del(token),
+            await this.sessionRepository.deleteAllSessionOfUser(user._id),
+        ]);
         return true;
     }
+
+    changePassword = async (userId: string, currentPassword: string, newPassword: string) => {
+        const user = await this.userRepository.findOneById(userId);
+        if (!user) throw new NotFoundException('User not found');
+
+        if (!(await bcrypt.compare(currentPassword, user.password))) {
+            throw new ForbiddenException('Old password is incorrect');
+        }
+
+        const hashedPassword = await hashData(newPassword);
+
+        /**
+         * step 1: update user password
+         * step 2: delete all sessions of the user
+         **/
+        await Promise.all([
+            await this.userRepository.update(user._id, { password: hashedPassword }),
+            await this.sessionRepository.deleteAllSessionOfUser(user._id),
+        ]);
+        return true;
+    };
 
     private async generateTokens(payload: PayloadToken) {
         const [accessToken, refreshToken] = await Promise.all([

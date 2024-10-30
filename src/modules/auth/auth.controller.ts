@@ -23,10 +23,9 @@ import { LoginDto } from './dtos/login.dto';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { VerifyPinDto } from './dtos/verify-pin.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
-import { LogoutDto } from './dtos/logout.dto';
-import { PayloadToken } from '@common/interfaces';
 import { RequestHeader } from '@common/decorators/request-header.decorator';
 import { DeviceHeaderDto } from './dtos/device-header.dto';
+import { ChangePasswordDto } from './dtos/change-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -102,5 +101,14 @@ export class AuthController {
     @Put('reset-password')
     resetPassword(@Body() resetPasswordData: ResetPasswordDto, @Query('token') token: string) {
         return this.authService.resetPassword(resetPasswordData, token);
+    }
+
+    @Put('change-password')
+    @UseGuards(AccessTokenGuard)
+    changePassword(
+        @Req() req: Request,
+        @Body() { currentPassword, newPassword }: ChangePasswordDto,
+    ) {
+        return this.authService.changePassword(req.user['sub'], currentPassword, newPassword);
     }
 }

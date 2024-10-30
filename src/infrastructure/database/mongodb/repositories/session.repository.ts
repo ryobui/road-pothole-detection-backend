@@ -21,7 +21,7 @@ export class SessionRepository
         await this.sessionRepository.deleteOne({ userId, deviceId });
     }
 
-    async deleteByUserId(userId: string): Promise<void> {
+    async deleteAllSessionOfUser(userId: string): Promise<void> {
         await this.sessionRepository.deleteMany({ userId });
     }
 }

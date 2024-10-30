@@ -15,4 +15,11 @@ export class UserRepository
     async findByEmail(email: string): Promise<User | null> {
         return this.userRepository.findOne({ email });
     }
+
+    async getProfile(userId: string): Promise<User | null> {
+        return this.userRepository
+            .findById(userId)
+            .select('-_id fullName email photo birthDay gender address')
+            .lean();
+    }
 }

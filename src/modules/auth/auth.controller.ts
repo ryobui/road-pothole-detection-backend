@@ -88,12 +88,14 @@ export class AuthController {
         });
     }
 
-    @Put('request-password-reset')
+    @Post('request-password-reset')
+    @HttpCode(HttpStatus.OK)
     requestPasswordReset(@Body() { email }: ForgotPasswordDto) {
         return this.authService.requestPasswordReset(email);
     }
 
-    @Put('verify-pin')
+    @Post('verify-pin')
+    @HttpCode(HttpStatus.OK)
     verifyPin(@Body() verifyPinData: VerifyPinDto) {
         return this.authService.verifyPin(verifyPinData);
     }

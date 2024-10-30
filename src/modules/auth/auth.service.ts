@@ -16,8 +16,7 @@ import { SignupDto } from './dtos/signup.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { VerifyPinDto } from './dtos/verify-pin.dto';
 import forgotPaswordOtpTemplate from '@infrastructure/services/email/templates/forgot-pasword-otp.template';
-import { Types } from 'mongoose';
-import { compareData, hashData } from '@common/utils/helpers';
+import { hashData } from '@common/utils/helpers';
 import { User } from '@infrastructure/database/mongodb/entities/user.entity';
 import { PayloadToken } from '@common/interfaces';
 import { SessionRepositoryInterface } from '@infrastructure/database/mongodb/repositories/interfaces/session.repository.interface';
@@ -61,14 +60,18 @@ export class AuthService {
     }
 
     async signup(signupData: SignupDto, deviceId: string) {
-        const { email, password, name } = signupData;
+        const { email, password, fullName } = signupData;
 
         if (await this.userRepository.findByEmail(email)) {
             throw new ConflictException('Email is already registered');
         }
 
         const hashedPassword = await hashData(password);
-        const user = await this.userRepository.create({ email, password: hashedPassword, name });
+        const user = await this.userRepository.create({
+            email,
+            password: hashedPassword,
+            fullName,
+        });
 
         const payload: PayloadToken = { sub: user._id, email: user.email, deviceId };
         const { accessToken, refreshToken } = await this.generateTokens(payload);

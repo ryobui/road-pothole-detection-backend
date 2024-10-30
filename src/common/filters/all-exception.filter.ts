@@ -1,6 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiResponse } from '../interfaces';
-import { Response } from 'express';
+import e, { Response } from 'express';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -24,8 +24,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
         };
 
         if (exception instanceof HttpException && status === HttpStatus.BAD_REQUEST) {
-            const validationErrors = exception.getResponse()['message'];
-            if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+            const validationErrors = exception.getResponse();
+            if (validationErrors) {
                 errorResponse = {
                     ...errorResponse,
                     errors: validationErrors,
@@ -33,6 +33,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
             }
         }
 
+        console.log({ status });
         response.status(status).json(errorResponse);
     }
 }

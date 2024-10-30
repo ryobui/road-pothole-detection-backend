@@ -7,6 +7,7 @@ import { appConfig, cacheConfig, databaseConfig, googleApiConfig, jwtConfig } fr
 import { InfrastructureModule } from '@infrastructure/infrastructure.module';
 import { MorganMiddleware } from '@nest-middlewares/morgan';
 import { AuthModule } from '@modules/auth/auth.module';
+import { UserModule } from '@modules/user/user.module';
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from '@modules/auth/auth.module';
         }),
         InfrastructureModule,
         CronJobsModule,
+        UserModule,
         AuthModule,
     ],
     providers: [

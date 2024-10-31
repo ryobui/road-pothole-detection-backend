@@ -11,5 +11,9 @@ export const googleApiConfig = () => ({
         clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
         redirectUrl: process.env.GOOGLE_AUTH_REDIRECT_URL,
     },
+    googleAccountService: {
+        clientEmail: process.env.GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL,
+        privateKey: process.env.GOOGLE_ACCOUNT_SERVICE_PRIVATE_KEY,
+    },
     emailName: 'Coffee Shop',
 });

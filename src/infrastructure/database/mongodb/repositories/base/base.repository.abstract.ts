@@ -36,8 +36,11 @@ export abstract class BaseRepositoryAbstract<T extends BaseEntity>
         return { items, total };
     }
 
-    async update(id: string, data: UpdateQuery<T>): Promise<T> {
-        return await this.model.findOneAndUpdate({ _id: id, deletedAt: null }, data, { new: true });
+    async update(id: string, data: UpdateQuery<T>, options?: QueryOptions): Promise<T> {
+        return await this.model.findOneAndUpdate({ _id: id, deletedAt: null }, data, {
+            new: true,
+            ...options,
+        });
     }
 
     async softDelete(id: string): Promise<boolean> {

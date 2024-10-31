@@ -12,6 +12,9 @@ export class Session extends BaseEntity {
     deviceId: string;
 
     @Prop({ required: true })
+    userAgent: string;
+
+    @Prop({ required: true })
     refreshToken: string;
 
     @Prop({ required: true })

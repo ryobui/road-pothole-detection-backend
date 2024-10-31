@@ -1,11 +1,14 @@
 import * as bcrypt from 'bcrypt';
+import { createHash } from 'crypto';
 
-const hashData = (data: string) => {
+export const hashData = (data: string) => {
     return bcrypt.hash(data, 10);
 };
 
-const compareData = (data: string, hashedData: string): Promise<boolean> => {
+export const compareData = (data: string, hashedData: string): Promise<boolean> => {
     return bcrypt.compare(data, hashedData);
 };
 
-export { hashData, compareData };
+export const genarateChecksum = (buffer: Buffer) => {
+    return createHash('md5').update(buffer).digest('hex');
+};

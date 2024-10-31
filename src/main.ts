@@ -30,7 +30,7 @@ async function bootstrap() {
         credentials: true,
     });
     app.setGlobalPrefix('api', {
-        // exclude: [{ path: 'example', method: RequestMethod.GET }], example of excluding a route
+        exclude: [{ path: 'images/:id', method: RequestMethod.GET }],
     });
     await app
         .listen(PORT, '0.0.0.0')

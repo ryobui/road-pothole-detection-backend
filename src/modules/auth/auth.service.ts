@@ -20,6 +20,7 @@ import { hashData } from '@common/utils/helpers';
 import { User } from '@infrastructure/database/mongodb/entities/user.entity';
 import { PayloadToken } from '@common/interfaces';
 import { SessionRepositoryInterface } from '@infrastructure/database/mongodb/repositories/interfaces/session.repository.interface';
+import { Session } from '@infrastructure/database/mongodb/entities/session.entity';
 
 @Injectable()
 export class AuthService {
@@ -45,21 +46,22 @@ export class AuthService {
         throw new UnauthorizedException('Invalid credentials');
     }
 
-    async login(user: User, deviceId: string) {
+    async login(user: User, deviceId: string, userAgent: string) {
         const payload: PayloadToken = { sub: user._id, email: user.email, deviceId };
 
         const { accessToken, refreshToken } = await this.generateTokens(payload);
-        await this.sessionRepository.create({
+        await this.createSession(user._id, deviceId, {
             userId: user._id,
-            refreshToken: refreshToken,
-            deviceId: deviceId,
+            refreshToken,
+            userAgent,
+            deviceId,
             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
 
         return { accessToken, refreshToken };
     }
 
-    async signup(signupData: SignupDto, deviceId: string) {
+    async signup(signupData: SignupDto, deviceId: string, userAgent: string) {
         const { email, password, fullName } = signupData;
 
         if (await this.userRepository.findByEmail(email)) {
@@ -75,10 +77,11 @@ export class AuthService {
 
         const payload: PayloadToken = { sub: user._id, email: user.email, deviceId };
         const { accessToken, refreshToken } = await this.generateTokens(payload);
-        await this.sessionRepository.create({
+        await this.createSession(user._id, deviceId, {
             userId: user._id,
-            refreshToken: refreshToken,
-            deviceId: deviceId,
+            refreshToken,
+            userAgent,
+            deviceId,
             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         });
 
@@ -172,6 +175,10 @@ export class AuthService {
         ]);
         return true;
     };
+
+    private async createSession(userId: string, deviceId: string, data: Partial<Session>) {
+        await this.sessionRepository.createOrUpdate(userId, deviceId, data);
+    }
 
     private async generateTokens(payload: PayloadToken) {
         const [accessToken, refreshToken] = await Promise.all([

@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AllExceptionsFilter } from '@common/filters';
 import { TransformInterceptor } from '@common/interceptors';
@@ -8,6 +8,8 @@ import { InfrastructureModule } from '@infrastructure/infrastructure.module';
 import { MorganMiddleware } from '@nest-middlewares/morgan';
 import { AuthModule } from '@modules/auth/auth.module';
 import { UserModule } from '@modules/user/user.module';
+import { ProxyRewriteImageMiddleware } from '@common/middlewares/proxy-rewrite-image.middleware';
+import { AppController } from './app.controller';
 
 @Module({
     imports: [
@@ -20,6 +22,7 @@ import { UserModule } from '@modules/user/user.module';
         UserModule,
         AuthModule,
     ],
+    controllers: [AppController],
     providers: [
         {
             provide: 'APP_FILTER',
@@ -37,6 +40,8 @@ export class AppModule {
             ':remote-addr :remote-user :method :url HTTP/:http-version :status :res[content-length] ":user-agent" - :response-time ms - :status',
         );
         consumer.apply(MorganMiddleware).forRoutes('*');
-        consumer.apply();
+        consumer
+            .apply(ProxyRewriteImageMiddleware)
+            .forRoutes({ path: 'images/:id', method: RequestMethod.GET });
     }
 }

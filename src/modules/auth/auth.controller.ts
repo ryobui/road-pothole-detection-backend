@@ -44,29 +44,33 @@ export class AuthController {
     @Post('signup')
     @HttpCode(HttpStatus.OK)
     signin(
+        @Req() req: Request,
         @RequestHeader(DeviceHeaderDto) headers: DeviceHeaderDto,
         @Body() signupData: SignupDto,
     ) {
         const deviceId = headers.deviceId;
+        const userAgent = req.headers['user-agent'];
         if (!deviceId) {
             throw new BadRequestException('Device ID is required');
         }
-        return this.authService.signup(signupData, deviceId);
+        return this.authService.signup(signupData, deviceId, userAgent);
     }
 
     @Post('login')
     @HttpCode(HttpStatus.OK)
     async login(
+        @Req() req: Request,
         @RequestHeader(DeviceHeaderDto) headers: DeviceHeaderDto,
         @Body() loginData: LoginDto,
     ) {
         const deviceId = headers.deviceId;
+        const userAgent = req.headers['user-agent'];
         if (!deviceId) {
             throw new BadRequestException('Device ID is required');
         }
         const { email, password } = loginData;
         const user = await this.authService.validateUser(email, password);
-        const tokens = await this.authService.login(user, deviceId);
+        const tokens = await this.authService.login(user, deviceId, userAgent);
         return tokens;
     }
 

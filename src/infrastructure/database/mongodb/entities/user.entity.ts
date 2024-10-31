@@ -26,6 +26,9 @@ export class User extends BaseEntity {
     photo: string;
 
     @Prop({ default: null })
+    checksumPhoto: string;
+
+    @Prop({ default: null })
     birthDay: Date;
 
     @Prop({ type: String, enum: Gender, default: Gender.Other })

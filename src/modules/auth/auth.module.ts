@@ -13,6 +13,7 @@ import { GmailService } from '@infrastructure/services/email/gmail.service';
 import { RedisService } from '@infrastructure/services/cache/redis.service';
 import { SessionRepository } from '@infrastructure/database/mongodb/repositories/session.repository';
 import { Session, SessionSchema } from '@infrastructure/database/mongodb/entities/session.entity';
+import { UserService } from '@modules/user/user.service';
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { Session, SessionSchema } from '@infrastructure/database/mongodb/entitie
     controllers: [AuthController],
     providers: [
         AuthService,
+        UserService,
         GoogleStrategy,
         {
             provide: 'UserRepositoryInterface',

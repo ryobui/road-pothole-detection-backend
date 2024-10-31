@@ -1,8 +1,18 @@
-import { Body, Controller, Get, Patch, Req, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Patch,
+    Req,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { AccessTokenGuard } from '@common/guards/access-token.guard';
 import { Request } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController {
@@ -24,13 +34,15 @@ export class UserController {
 
     @Patch('update-photo')
     @UseGuards(AccessTokenGuard)
-    async updatePhoto(@Req() req: Request) {
-        const userId = req.user['sub'] as string;
+    @UseInterceptors(FileInterceptor('image'))
+    async updatePhoto(@Req() req: Request, @UploadedFile() file: Express.Multer.File) {
         /**
          * Implement update photo logic here
          * - Upload photo to cloud storage
          * - Update user photo in database
          * - Return updated user profile
          */
+        const userId = req.user['sub'] as string;
+        return await this.userService.updatePhoto(userId, file);
     }
 }

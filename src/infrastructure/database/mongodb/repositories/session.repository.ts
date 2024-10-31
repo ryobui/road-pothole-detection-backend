@@ -13,6 +13,13 @@ export class SessionRepository
         super(sessionRepository);
     }
 
+    async createOrUpdate(userId: string, deviceId: string, sessionData: Partial<Session>) {
+        await this.sessionRepository.updateOne({ userId, deviceId }, sessionData, {
+            upsert: true,
+            new: true,
+        });
+    }
+
     async findByUserIdAndDeviceId(userId: string, deviceId: string): Promise<Session> {
         return this.sessionRepository.findOne({ userId, deviceId });
     }

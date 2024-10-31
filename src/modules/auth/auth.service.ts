@@ -50,7 +50,7 @@ export class AuthService {
         const payload: PayloadToken = { sub: user._id, email: user.email, deviceId };
 
         const { accessToken, refreshToken } = await this.generateTokens(payload);
-        await this.createSession({
+        await this.createSession(user._id, deviceId, {
             userId: user._id,
             refreshToken,
             userAgent,
@@ -77,7 +77,7 @@ export class AuthService {
 
         const payload: PayloadToken = { sub: user._id, email: user.email, deviceId };
         const { accessToken, refreshToken } = await this.generateTokens(payload);
-        await this.createSession({
+        await this.createSession(user._id, deviceId, {
             userId: user._id,
             refreshToken,
             userAgent,
@@ -176,8 +176,8 @@ export class AuthService {
         return true;
     };
 
-    private async createSession(data: Partial<Session>) {
-        await this.sessionRepository.create(data);
+    private async createSession(userId: string, deviceId: string, data: Partial<Session>) {
+        await this.sessionRepository.createOrUpdate(userId, deviceId, data);
     }
 
     private async generateTokens(payload: PayloadToken) {

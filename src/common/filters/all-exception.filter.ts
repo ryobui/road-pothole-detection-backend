@@ -1,6 +1,6 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import { ApiResponse } from '../interfaces';
-import e, { Response } from 'express';
+import { Response } from 'express';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -8,32 +8,29 @@ export class AllExceptionsFilter implements ExceptionFilter {
     catch(exception: HttpException, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
-        const request = ctx.getRequest<Request>();
-        const status =
-            exception instanceof HttpException
-                ? exception.getStatus()
-                : HttpStatus.INTERNAL_SERVER_ERROR;
-
-        console.log(exception);
+        const status = exception.getStatus();
 
         let errorResponse: ApiResponse<any> = {
             message:
-                exception instanceof HttpException ? exception.message : 'Internal Server Error',
+                status === HttpStatus.INTERNAL_SERVER_ERROR
+                    ? 'Internal Server Error'
+                    : exception.message,
             status: HttpStatus[status],
+            stack: exception.stack,
             data: null,
         };
 
-        if (exception instanceof HttpException && status === HttpStatus.BAD_REQUEST) {
+        if (status === HttpStatus.BAD_REQUEST) {
             const validationErrors = exception.getResponse();
             if (validationErrors) {
                 errorResponse = {
                     ...errorResponse,
+                    message: 'Validation failed',
                     errors: validationErrors,
                 };
             }
         }
 
-        console.log({ status });
         response.status(status).json(errorResponse);
     }
 }

@@ -13,6 +13,7 @@ RUN npm install
 # Sao chép toàn bộ mã nguồn vào container
 COPY . .
 
+RUN la -al
 # Biên dịch mã nguồn TypeScript sang JavaScript
 RUN npm run build
 

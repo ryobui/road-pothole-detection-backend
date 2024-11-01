@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-     - name: Log in to Docker Hub
+      - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.USER_NAME_DOCKER_HUB }}
@@ -26,8 +26,9 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./docker
-          file: ./docker-compose.yaml
+          file: ./docker/docker-compose.yaml
           push: true
           tags: buithiendev/road-pohole-detechion-backend:latest
+          
       - name: Log out of Docker Hub
         run: docker logout

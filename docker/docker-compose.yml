@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   app:
+    container_name: backend_road_pothole_detection
     build:
       context: ..
       dockerfile: docker/Dockerfile
@@ -27,22 +28,25 @@ services:
       - REDIS_TTL=300000
       - MONGODB_URI=mongodb+srv://your_mongo_user:your_mongo_password@your_mongo_cluster/your_database?retryWrites=true&w=majority&appName=your_app_name
     depends_on:
-      - db
       - redis
-
-  db:
-    build:
-      context: ./mysql
-      dockerfile: Dockerfile
-    ports:
-      - '3306:3306'
-    environment:
-      // copy from .env.example file
+    networks:
+      - app-network
 
   redis:
+    container_name: redis_service_road_pothole_detection
     image: redis:latest
+    command: [ "redis-server", "--requirepass", "your_secure_password" ]
     ports:
       - '6379:6379'
-    environment:
-      REDIS_PASSWORD: your_secure_password
-    command: ["redis-server", "--requirepass", "your_secure_password"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+volumes:
+  redis_data:
+
+
+networks:
+  app-network:
+    driver: bridge

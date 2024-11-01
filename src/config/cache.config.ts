@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 export const cacheConfig = () => ({
     redis: {
         url: process.env.REDIS_URL,

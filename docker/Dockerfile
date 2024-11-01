@@ -1,12 +1,23 @@
-FROM node:slim as builder
-WORKDIR /app
+# Sử dụng image Node.js chính thức làm base image
+FROM node:18
+
+# Thiết lập thư mục làm việc trong container
+WORKDIR /usr/src/app
+
+# Sao chép package.json và package-lock.json vào container
 COPY package*.json ./
+
+# Cài đặt các dependencies
 RUN npm install
+
+# Sao chép toàn bộ mã nguồn vào container
 COPY . .
+
+# Biên dịch mã nguồn TypeScript sang JavaScript
 RUN npm run build
 
-FROM node:slim
-WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-CMD ["node", "dist/main.js"]
+# Expose port mà ứng dụng sẽ chạy (thay đổi nếu cần)
+EXPOSE 3000
+
+# Chạy ứng dụng
+CMD ["npm", "run", "start:prod"]

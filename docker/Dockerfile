@@ -1,11 +1,11 @@
-FROM node:alpine AS builder
+FROM node:slim AS builder
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
+COPY ../package*.json ./
+RUN npm install && npm cache clean --force
+COPY ../ .
 RUN npm run build
 
-FROM node:alpine
+FROM node:slim
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules

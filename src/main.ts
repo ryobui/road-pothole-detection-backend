@@ -33,7 +33,7 @@ async function bootstrap() {
         exclude: [{ path: 'images/:id', method: RequestMethod.GET }],
     });
     await app
-        .listen(PORT, '0.0.0.0')
+        .listen(PORT)
         .then(() => {
             console.log('Server is running on port ' + PORT);
         })

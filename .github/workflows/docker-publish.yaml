@@ -15,10 +15,10 @@ jobs:
         uses: actions/checkout@v4
       - name: build image
         run: |
-          docker build -t buithiendev/road-pothole-detection-backend:latest -f docker/Dockerfile .
+          docker build -t buithiendev/road-pohole-detection-backend:latest .
       - name: push image to docker hub
         run: |
           docker login -u ${{ secrets.USER_NAME_DOCKER_HUB }} -p ${{ secrets.ACCESS_TOKEN_DOCKER_HUB }}
-          docker push buithiendev/road-pothole-detection-backend:latest
+          docker push buithiendev/road-pohole-detection-backend:latest
       - name: Log out of Docker Hub
         run: docker logout

@@ -1,8 +1,8 @@
 FROM node:slim AS builder
 WORKDIR /app
-COPY ../package*.json ./
+COPY package*.json ./
 RUN npm install && npm cache clean --force
-COPY ../ .
+COPY . .
 RUN npm run build
 
 FROM node:slim

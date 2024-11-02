@@ -3,9 +3,7 @@ version: '3.8'
 services:
   app:
     container_name: backend_road_pothole_detection
-    build:
-      context: ..
-      dockerfile: docker/Dockerfile
+    image: buithiendev/road-pothole-detection-backend:latest
     ports:
       - '3000:3000'
     env_file:

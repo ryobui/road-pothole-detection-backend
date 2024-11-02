@@ -37,10 +37,9 @@ export class GmailService {
     }
 
     async sendMail(to: string, subject: string, message: string): Promise<boolean> {
-        const transport = await this.createTransport();
-        const mailOptions = this.setMailOptions(to, subject, message);
-
         try {
+            const transport = await this.createTransport();
+            const mailOptions = this.setMailOptions(to, subject, message);
             await transport.sendMail(mailOptions);
             return true;
         } catch (error) {

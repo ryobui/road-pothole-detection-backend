@@ -3,11 +3,12 @@ version: '3.8'
 services:
   app:
     container_name: backend_road_pothole_detection
+    platform: linux/amd64
     image: buithiendev/road-pothole-detection-backend:latest
     ports:
       - '3000:3000'
     env_file:
-      - ../.env
+      - ../.env.production
     depends_on:
       - redis
     networks:

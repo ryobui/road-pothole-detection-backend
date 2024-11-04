@@ -1,0 +1,27 @@
+name: Pull images and Run on VPS
+
+on:
+  pull_request:
+    branches:
+      - main
+  
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4.2.2
+
+      - name: "Copy docker-compose file"
+        run: |
+          mkdir -p docker
+          cp road-pothole-detection-backend/docker/docker-compose.yml docker/docker-compose.yml
+
+      - name: "Shut down containers if there's any"
+        working-directory: ./docker
+        run: docker-compose down
+
+      - name: "Run docker-compose file"
+        working-directory: ./docker
+        run: docker-compose up -d

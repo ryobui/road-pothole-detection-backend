@@ -41,6 +41,3 @@ jobs:
       - name: "Run docker-compose file"
         working-directory: docker/
         run: sudo docker-compose up --build
-
-      - name: "Verify containers"
-        run: sudo docker ps -a

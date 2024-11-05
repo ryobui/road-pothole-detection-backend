@@ -39,11 +39,11 @@ jobs:
 
       - name: "Shut down containers if there's any"
         working-directory: docker/
-        run: docker-compose down --rmi all
+        run: sudo docker-compose down --rmi all
 
       - name: "Run docker-compose file"
         working-directory: docker/
-        run: docker-compose up --build
+        run: sudo docker-compose up --build
 
       - name: "Log out of Dockerhub"
         run: docker logout

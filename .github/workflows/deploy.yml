@@ -28,14 +28,11 @@ jobs:
           echo "GOOGLE_AUTH_CLIENT_SECRET=${{ secrets.GOOGLE_AUTH_CLIENT_SECRET }}" >> .env.production
           echo "GOOGLE_AUTH_REDIRECT_URL=${{ secrets.GOOGLE_AUTH_REDIRECT_URL }}" >> .env.production
           echo "GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL=${{ secrets.GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL }}" >> .env.production
-          echo "GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL=${{ secrets.GOOGLE_ACCOUNT_SERVICE_PRIVATE_KEY }}" >> .env.production
+          echo "GOOGLE_ACCOUNT_SERVICE_PRIVATE_KEY=${{ secrets.GOOGLE_ACCOUNT_SERVICE_PRIVATE_KEY }}" >> .env.production
           echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env.production
           echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env.production
           echo "REDIS_TTL=${{ secrets.REDIS_TTL }}" >> .env.production
           echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.production
-
-      - name: "Login to Dockerhub"
-        run: docker login -u ${{ secrets.USER_NAME_DOCKER_HUB }} -p ${{ secrets.ACCESS_TOKEN_DOCKER_HUB }}
 
       - name: "Shut down containers if there's any"
         working-directory: docker/
@@ -43,7 +40,4 @@ jobs:
 
       - name: "Run docker-compose file"
         working-directory: docker/
-        run: sudo docker-compose up --build
-
-      - name: "Log out of Dockerhub"
-        run: docker logout
+        run: sudo docker-compose up -d

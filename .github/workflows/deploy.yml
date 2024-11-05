@@ -40,4 +40,4 @@ jobs:
 
       - name: "Run docker-compose file"
         working-directory: docker/
-        run: sudo docker-compose up --build --exit-code-from backend_road_pothole_detection
+        run: sudo docker-compose up --build --exit-code-from app

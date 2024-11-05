@@ -6,5 +6,7 @@ export class AppController {
     getImage() {}
 
     @Get('hello-world')
-    helloWorld() {}
+    helloWorld() {
+        return 'hello world!';
+    }
 }

@@ -16,7 +16,7 @@ jobs:
       - name: "Create '.env.production' file"
         run: |
           echo "PORT=${{ secrets.PORT }}" >> .env.production
-          echo "ACCESS_TOKEN_SECRET=${{ secrets.YOUR_ACCESS_TOKEN_SECRET }}" >> .env.production
+          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> .env.production
           echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> .env.production
           echo "GLOBAL_TOKEN_SECRET=${{ secrets.GLOBAL_TOKEN_SECRET }}" >> .env.production
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env.production

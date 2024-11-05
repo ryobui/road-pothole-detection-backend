@@ -27,6 +27,9 @@ jobs:
           echo "GOOGLE_AUTH_CLIENT_ID=${{ secrets.GOOGLE_AUTH_CLIENT_ID }}" >> .env.production
           echo "GOOGLE_AUTH_CLIENT_SECRET=${{ secrets.GOOGLE_AUTH_CLIENT_SECRET }}" >> .env.production
           echo "GOOGLE_AUTH_REDIRECT_URL=${{ secrets.GOOGLE_AUTH_REDIRECT_URL }}" >> .env.production
+          echo "GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL=${{ secrets.GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL }}" >> .env.production
+          echo "GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL=${{ secrets.GOOGLE_ACCOUNT_SERVICE_PRIVATE_KEY }}" >> .env.production
+          echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env.production
           echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env.production
           echo "REDIS_TTL=${{ secrets.REDIS_TTL }}" >> .env.production
           echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.production

@@ -1,4 +1,5 @@
 services:
+
   app:
     container_name: backend_road_pothole_detection
     platform: linux/amd64

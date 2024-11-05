@@ -26,7 +26,6 @@ services:
 volumes:
   redis_data:
 
-
 networks:
   app-network:
     driver: bridge

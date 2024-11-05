@@ -34,6 +34,9 @@ jobs:
           echo "REDIS_TTL=${{ secrets.REDIS_TTL }}" >> .env.production
           echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.production
 
+      - name: "Login to Dockerhub"
+        run: docker login -u ${{ secrets.USER_NAME_DOCKER_HUB }} -p ${{ secrets.ACCESS_TOKEN_DOCKER_HUB }}
+
       - name: "Shut down containers if there's any"
         working-directory: docker/
         run: docker-compose down --rmi all
@@ -41,3 +44,6 @@ jobs:
       - name: "Run docker-compose file"
         working-directory: docker/
         run: docker-compose up --build
+
+      - name: "Log out of Dockerhub"
+        run: docker logout

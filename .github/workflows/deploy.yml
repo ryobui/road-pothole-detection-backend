@@ -34,9 +34,6 @@ jobs:
           echo "REDIS_TTL=${{ secrets.REDIS_TTL }}" >> .env.production
           echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.production
 
-      - name: "whoami"
-        run: whoami
-
       - name: "Shut down containers if there's any"
         working-directory: docker/
         run: docker-compose down --rmi all

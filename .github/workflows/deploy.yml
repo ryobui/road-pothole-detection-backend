@@ -40,4 +40,10 @@ jobs:
 
       - name: "Run docker-compose file"
         working-directory: docker/
-        run: sudo docker-compose up --build --exit-code-from app
+        run: sudo docker-compose up --build -d
+
+      - name: "Check container status"
+        working-directory: docker/
+        run: |
+          sudo docker-compose ps
+          sudo docker-compose logs

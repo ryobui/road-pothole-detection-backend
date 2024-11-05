@@ -1,5 +1,3 @@
-version: '4.9'
-
 services:
   app:
     container_name: backend_road_pothole_detection

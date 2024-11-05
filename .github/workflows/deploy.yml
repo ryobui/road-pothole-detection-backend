@@ -13,10 +13,28 @@ jobs:
       - name: "Checkout code"
         uses: actions/checkout@v4.2.2
 
+      - name: "Create '.env.production' file"
+        run: |
+          echo "PORT=${{ secrets.PORT }}" >> .env.production
+          echo "ACCESS_TOKEN_SECRET=${{ secrets.YOUR_ACCESS_TOKEN_SECRET }}" >> .env.production
+          echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> .env.production
+          echo "GLOBAL_TOKEN_SECRET=${{ secrets.GLOBAL_TOKEN_SECRET }}" >> .env.production
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env.production
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env.production
+          echo "GOOGLE_REDIRECT_URL=${{ secrets.GOOGLE_REDIRECT_URL }}" >> .env.production
+          echo "GOOGLE_REFRESH_TOKEN=${{ secrets.GOOGLE_REFRESH_TOKEN }}" >> .env.production
+          echo "GOOGLE_USER_EMAIL=${{ secrets.GOOGLE_USER_EMAIL }}" >> .env.production
+          echo "GOOGLE_AUTH_CLIENT_ID=${{ secrets.GOOGLE_AUTH_CLIENT_ID }}" >> .env.production
+          echo "GOOGLE_AUTH_CLIENT_SECRET=${{ secrets.GOOGLE_AUTH_CLIENT_SECRET }}" >> .env.production
+          echo "GOOGLE_AUTH_REDIRECT_URL=${{ secrets.GOOGLE_AUTH_REDIRECT_URL }}" >> .env.production
+          echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env.production
+          echo "REDIS_TTL=${{ secrets.REDIS_TTL }}" >> .env.production
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.production
+
       - name: "Shut down containers if there's any"
         working-directory: docker/
-        run: docker-compose down
+        run: docker-compose down --rmi all
 
       - name: "Run docker-compose file"
         working-directory: docker/
-        run: docker-compose up -d
+        run: docker-compose up --build

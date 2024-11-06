@@ -45,8 +45,3 @@ jobs:
 
       - name: "Remove '.env.production' file"
         run: rm -f .env.production
-
-      - name: "Check container status"
-        working-directory: docker/
-        run: |
-          sudo docker-compose ps

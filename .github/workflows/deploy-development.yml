@@ -1,4 +1,4 @@
-name: Pull images and Run on VPS
+name: Pull images and Run on VPS Development
 
 on:
   workflow_run:

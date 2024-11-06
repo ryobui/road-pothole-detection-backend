@@ -1,10 +1,9 @@
-name: Build and Publish Docker Image
+name: Build and Publish Docker Image Development
 
 on:
     push:
         branches:
-            - main
-            - deployment
+            - development
 
 jobs:
     build:
@@ -14,10 +13,10 @@ jobs:
             - name: checkout
               uses: actions/checkout@v4
             - name: build image
-              run: docker build -t buithiendev/road-pothole-detection-backend:latest .
+              run: docker build -t buithiendev/road-pothole-detection-backend-dev:latest .
             - name: Log in to Docker Hub
               run: docker login -u ${{ secrets.USER_NAME_DOCKER_HUB }} -p ${{ secrets.ACCESS_TOKEN_DOCKER_HUB }}
             - name: Push Docker image to Docker Hub
-              run: docker push buithiendev/road-pothole-detection-backend:latest
+              run: docker push buithiendev/road-pothole-detection-backend-dev:latest
             - name: Log out of Docker Hub
               run: docker logout

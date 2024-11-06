@@ -2,7 +2,7 @@ services:
   app:
     container_name: backend_road_pothole_detection
     platform: linux/amd64
-    image: buithiendev/road-pothole-detection-backend:latest
+    image: ${IMAGE_NAME}
     ports:
       - '3000:3000'
     env_file:

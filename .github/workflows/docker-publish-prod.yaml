@@ -1,0 +1,22 @@
+name: Build and Publish Docker Image Production
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: checkout
+              uses: actions/checkout@v4
+            - name: build image
+              run: docker build -t buithiendev/road-pothole-detection-backend:latest .
+            - name: Log in to Docker Hub
+              run: docker login -u ${{ secrets.USER_NAME_DOCKER_HUB }} -p ${{ secrets.ACCESS_TOKEN_DOCKER_HUB }}
+            - name: Push Docker image to Docker Hub
+              run: docker push buithiendev/road-pothole-detection-backend:latest
+            - name: Log out of Docker Hub
+              run: docker logout

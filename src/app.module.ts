@@ -10,6 +10,7 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { UserModule } from '@modules/user/user.module';
 import { ProxyRewriteImageMiddleware } from '@common/middlewares/proxy-rewrite-image.middleware';
 import { AppController } from './app.controller';
+import { MapModule } from '@modules/map/map.module';
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import { AppController } from './app.controller';
         InfrastructureModule,
         CronJobsModule,
         UserModule,
+        MapModule,
         AuthModule,
     ],
     controllers: [AppController],

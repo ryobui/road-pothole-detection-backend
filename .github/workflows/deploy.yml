@@ -35,16 +35,15 @@ jobs:
           echo "REDIS_TTL=${{ secrets.REDIS_TTL }}" >> .env.production
           echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.production
 
-      - name: "Shut down containers if there's any"
+      - name: "Run pull images from Docker Hub"
         working-directory: docker/
-        run: sudo docker-compose down --rmi all
+        run: sudo docker-compose pull
 
       - name: "Run docker-compose file"
         working-directory: docker/
-        run: sudo docker-compose up --build -d
+        run: sudo docker-compose up --force-recreate -d
 
       - name: "Check container status"
         working-directory: docker/
         run: |
           sudo docker-compose ps
-          sudo docker-compose logs

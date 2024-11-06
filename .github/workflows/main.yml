@@ -1,0 +1,16 @@
+name: Restrict Branches for main
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch
+        if: github.event.pull_request.head.ref != 'development' || github.event.pull_request.head.ref != 'hotfix'
+        run: |
+          echo "Pull request to main can only come from 'development' or 'hotfix' branches."
+          exit 1

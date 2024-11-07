@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { UserRepositoryInterface } from '@infrastructure/database/mongodb/repositories/interfaces/user.repository.interface';
 import { StorageService } from '@infrastructure/services/storage/storage.service';
@@ -24,21 +24,25 @@ export class UserService {
 
     async getProfile(userId: string) {
         const profile = await this.userRepository.getProfile(userId);
-        return profile;
+        return {
+            ...profile,
+            photo: `/images/${profile.photo}`,
+        };
     }
 
     async updatePhoto(userId: string, file: Express.Multer.File) {
         const user = await this.userRepository.findOneById(userId);
         const checksum = genarateChecksum(file.buffer);
+        throw new BadRequestException('a');
         if (checksum === user.checksumPhoto) {
             return {
-                photo: 'localhost:3002/images/' + user.photo,
+                photo: '/images/' + user.photo,
             };
         }
         const photo = await this.storageService.uploadFile(file);
         await this.userRepository.update(userId, { photo: photo.id, checksumPhoto: checksum });
         return {
-            photo: 'localhost:3002/images/' + photo.id,
+            photo: '/images/' + photo.id,
         };
     }
 

@@ -18,5 +18,5 @@ export const googleApiConfig = () => ({
         clientEmail: process.env.GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL,
         privateKey: process.env.GOOGLE_ACCOUNT_SERVICE_PRIVATE_KEY,
     },
-    emailName: 'Coffee Shop',
+    emailName: 'Road Pothole Detection - Team 13',
 });

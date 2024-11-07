@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 export const googleApiConfig = () => ({
     googleapis: {
         clientId: process.env.GOOGLE_CLIENT_ID,

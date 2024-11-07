@@ -14,6 +14,7 @@ import { secondToMilliseconds } from '@common/utils/time';
                 return {
                     store: await redisStore({
                         url: configService.get('redis.url'),
+                        password: configService.get('redis.password'),
                         ttl: secondToMilliseconds(configService.get('redis.ttl')),
                     }),
                 };

@@ -110,7 +110,6 @@ export class AuthService {
         const user = await this.userRepository.findByEmail(email);
         if (!user) throw new NotFoundException('Email not registered');
 
-        throw new InternalServerErrorException('Fail');
         const pin = this.generatePin();
         await Promise.all([
             this.redisService.set(email, pin, this.TIME_TO_LIVE),

@@ -11,11 +11,15 @@ import { UserModule } from '@modules/user/user.module';
 import { ProxyRewriteImageMiddleware } from '@common/middlewares/proxy-rewrite-image.middleware';
 import { AppController } from './app.controller';
 import { MapModule } from '@modules/map/map.module';
+import { SlackNotificationService } from '@infrastructure/services/slack/slack-notification.service';
+import { SlackService } from 'nestjs-slack';
+import { SlackNotificationModule } from '@infrastructure/services/slack/slack-notification.module';
+import { slackConfig } from './config/slack.config';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
-            load: [databaseConfig, jwtConfig, googleApiConfig, cacheConfig, appConfig],
+            load: [databaseConfig, jwtConfig, googleApiConfig, cacheConfig, appConfig, slackConfig],
             isGlobal: true,
         }),
         InfrastructureModule,

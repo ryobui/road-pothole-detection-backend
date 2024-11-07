@@ -1,17 +1,44 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
+import {
+    ArgumentsHost,
+    Catch,
+    ExceptionFilter,
+    HttpException,
+    HttpStatus,
+    Inject,
+} from '@nestjs/common';
 import { ApiResponse } from '../interfaces';
 import { Response } from 'express';
+import { SlackNotificationService } from '@infrastructure/services/slack/slack-notification.service';
+import { ConfigService } from '@nestjs/config';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-    constructor() {}
-    catch(exception: HttpException, host: ArgumentsHost) {
+    constructor(
+        private readonly slackNotificationService: SlackNotificationService,
+        private readonly configService: ConfigService,
+    ) {}
+    async catch(exception: HttpException, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
+        const request = ctx.getRequest<Request>();
         const status =
             exception instanceof HttpException
                 ? exception.getStatus()
                 : HttpStatus.INTERNAL_SERVER_ERROR;
+
+        if (
+            (this.configService.get('nodeEnv') === 'PRODUCTION' ||
+                this.configService.get('nodeEnv') === 'DEVELOPMENT') &&
+            status === HttpStatus.INTERNAL_SERVER_ERROR
+        ) {
+            const errorMessage = `
+                :beetle: *Exception occurred* :beetle: **
+                - *Method:* \`${request.url}\`
+                - *Error Message:* ${exception.message}
+                - *Stack Trace:* \`\`\`${exception.stack}\`\`\`
+            `;
+            await this.slackNotificationService.sendErrorNotification(errorMessage);
+        }
 
         let errorResponse: ApiResponse<any> = {
             message:

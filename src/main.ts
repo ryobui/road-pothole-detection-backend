@@ -16,7 +16,6 @@ async function bootstrap() {
             enableDebugMessages: true,
             exceptionFactory: (validationErorrs) => {
                 const errors = {};
-
                 validationErorrs.forEach((error) => {
                     errors[error.property] = Object.values(error.constraints);
                 });

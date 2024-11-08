@@ -39,7 +39,9 @@ export class UserController {
     @UseInterceptors(FileInterceptor('file'))
     async updatePhoto(
         @Req() req: Request,
-        @UploadedFile(new FileValidationPipe(2 * 1024 * 1024, ['jpg', 'jpeg', 'png', 'webp']))
+        @UploadedFile(
+            new FileValidationPipe('file', 2 * 1024 * 1024, ['jpg', 'jpeg', 'png', 'webp']),
+        )
         file: Express.Multer.File,
     ) {
         /**

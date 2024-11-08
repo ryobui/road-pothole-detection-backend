@@ -42,12 +42,15 @@ jobs:
         working-directory: docker/
         run: sudo IMAGE_NAME=buithiendev/road-pothole-detection-backend-dev:latest docker-compose pull
 
-      - name: "Remove images with tag <none>"
-        run: sudo docker rmi $(docker images -f "dangling=true" -q)
-
       - name: "Run docker-compose file"
         working-directory: docker/
         run: sudo IMAGE_NAME=buithiendev/road-pothole-detection-backend-dev:latest docker-compose up --force-recreate -d
+
+      - name: "Remove images with tag <none>"
+        run: sudo docker image prune -f
+      
+      - name: "Docker images"
+        run: sudo docker images
 
       - name: "Remove '.env.production' file"
         run: rm -f .env.production

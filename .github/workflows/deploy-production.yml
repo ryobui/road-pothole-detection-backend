@@ -47,7 +47,7 @@ jobs:
         run: sudo IMAGE_NAME=buithiendev/road-pothole-detection-backend:latest docker-compose up --force-recreate -d
 
       - name: "Remove images with tag <none>"
-        run: sudo docker rmi $(docker images -f "dangling=true" -q)
+        run: sudo docker rmi $(docker images -f "dangling=true")
 
       - name: "Remove '.env.production' file"
         run: rm -f .env.production

@@ -43,7 +43,7 @@ jobs:
         run: sudo IMAGE_NAME=buithiendev/road-pothole-detection-backend-dev:latest docker-compose pull
 
       - name: "Remove images with tag <none>"
-        run: sudo docker rmi $(docker images -f "dangling=true" -q)
+        run: sudo docker rmi $(docker images -f "dangling=true")
 
       - name: "Run docker-compose file"
         working-directory: docker/

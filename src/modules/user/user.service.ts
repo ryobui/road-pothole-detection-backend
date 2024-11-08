@@ -33,7 +33,6 @@ export class UserService {
     async updatePhoto(userId: string, file: Express.Multer.File) {
         const user = await this.userRepository.findOneById(userId);
         const checksum = genarateChecksum(file.buffer);
-        throw new BadRequestException('a');
         if (checksum === user.checksumPhoto) {
             return {
                 photo: '/images/' + user.photo,

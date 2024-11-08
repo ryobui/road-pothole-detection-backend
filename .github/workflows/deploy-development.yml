@@ -48,6 +48,9 @@ jobs:
 
       - name: "Remove images with tag <none>"
         run: sudo docker image prune -f
+      
+      - name: "Docker images"
+        run: sudo docker images
 
       - name: "Remove '.env.production' file"
         run: rm -f .env.production

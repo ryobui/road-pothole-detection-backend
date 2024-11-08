@@ -7,12 +7,14 @@ import {
     UploadedFile,
     UseGuards,
     UseInterceptors,
+    UsePipes,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 import { AccessTokenGuard } from '@common/guards/access-token.guard';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { FileValidationPipe } from '@common/pipes/file.validation.pipe';
 
 @Controller('user')
 export class UserController {
@@ -34,8 +36,12 @@ export class UserController {
 
     @Patch('update-photo')
     @UseGuards(AccessTokenGuard)
-    @UseInterceptors(FileInterceptor('image'))
-    async updatePhoto(@Req() req: Request, @UploadedFile() file: Express.Multer.File) {
+    @UseInterceptors(FileInterceptor('file'))
+    async updatePhoto(
+        @Req() req: Request,
+        @UploadedFile(new FileValidationPipe(2 * 1024 * 1024, ['jpg', 'jpeg', 'png', 'webp']))
+        file: Express.Multer.File,
+    ) {
         /**
          * Implement update photo logic here
          * - Upload photo to cloud storage

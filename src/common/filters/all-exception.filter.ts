@@ -13,22 +13,25 @@ import { ConfigService } from '@nestjs/config';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
+    private readonly NODE_ENV;
     constructor(
         private readonly slackNotificationService: SlackNotificationService,
         private readonly configService: ConfigService,
-    ) {}
+    ) {
+        this.NODE_ENV = this.configService.get('nodeEnv');
+    }
     async catch(exception: HttpException, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
+
         const status =
             exception instanceof HttpException
                 ? exception.getStatus()
                 : HttpStatus.INTERNAL_SERVER_ERROR;
 
         if (
-            (this.configService.get('nodeEnv') === 'PRODUCTION' ||
-                this.configService.get('nodeEnv') === 'DEVELOPMENT') &&
+            (this.NODE_ENV === 'PRODUCTION' || this.NODE_ENV === 'DEVELOPMENT') &&
             status === HttpStatus.INTERNAL_SERVER_ERROR
         ) {
             const errorMessage = `
@@ -46,7 +49,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
                     ? 'Internal Server Error'
                     : exception.message,
             status: HttpStatus[status],
-            stack: exception.stack,
+            stack: this.NODE_ENV === 'LOCAL' ? exception.stack : undefined,
             data: null,
         };
 

@@ -33,6 +33,7 @@ jobs:
           echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env.production
           echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env.production
           echo "REDIS_TTL=${{ secrets.REDIS_TTL }}" >> .env.production
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env.production
           echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.production
           echo "SLACK_WEBHOOK_API=${{ secrets.SLACK_WEBHOOK_API }}" >> .env.production
           echo "NODE_ENV=DEVELOPMENT" >> .env.production
@@ -40,6 +41,9 @@ jobs:
       - name: "Run pull images from Docker Hub"
         working-directory: docker/
         run: sudo IMAGE_NAME=buithiendev/road-pothole-detection-backend-dev:latest docker-compose pull
+
+      - name: "Remove images with tag <none>"
+        run: sudo docker rmi $(docker images -f "dangling=true" -q)
 
       - name: "Run docker-compose file"
         working-directory: docker/

@@ -2,7 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as compression from 'compression';
 import { BadRequestException, RequestMethod, ValidationPipe } from '@nestjs/common';
-import { appConfig } from './config';
+import { appConfig } from './config/app.config';
+
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const PORT = appConfig().port;

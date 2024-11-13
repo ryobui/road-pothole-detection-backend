@@ -52,9 +52,6 @@ export class AuthController {
     ) {
         const deviceId = headers.deviceId;
         const userAgent = req.headers['user-agent'];
-        if (!deviceId) {
-            throw new BadRequestException('Device ID is required');
-        }
         return this.authService.signup(signupData, deviceId, userAgent);
     }
 
@@ -67,9 +64,6 @@ export class AuthController {
     ) {
         const deviceId = headers.deviceId;
         const userAgent = req.headers['user-agent'];
-        if (!deviceId) {
-            throw new BadRequestException('Device ID is required');
-        }
         const { email, password } = loginData;
         const user = await this.authService.validateUser(email, password);
         const tokens = await this.authService.login(user, deviceId, userAgent);

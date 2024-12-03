@@ -3,19 +3,19 @@ import { BaseEntity } from './base.entity';
 import { HydratedDocument, Types } from 'mongoose';
 
 @Schema({
-    collection: 'potholes',
+    collection: 'locations',
     timestamps: true,
 })
-export class Pothole extends BaseEntity {
+export class Location extends BaseEntity {
+    @Prop({required: true, type: String})
+    address: string;
+
     @Prop({ required: true })
     latitude: number;
 
     @Prop({ required: true })
     longitude: number;
-
-    @Prop({type: String, default: null})
-    photo: string;
 }
 
-export type PotholeDocument = HydratedDocument<Pothole>;
-export const PotholeSchema = SchemaFactory.createForClass(Pothole);
+export type LocationDocument = HydratedDocument<Location>;
+export const LocationSchema = SchemaFactory.createForClass(Location);

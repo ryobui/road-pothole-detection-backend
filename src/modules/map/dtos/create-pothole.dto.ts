@@ -1,11 +1,15 @@
-import { IsNotEmpty, IsString } from "class-validator"
+import { IsNotEmpty, IsNumber, IsString, Max, Min } from "class-validator"
 
 export class CreatePotholeDto {
     @IsNotEmpty()
-    @IsString()
-    latitude: string
+    @IsNumber()
+    @Min(-90)
+    @Max(90)
+    latitude: number
 
     @IsNotEmpty()
-    @IsString()
-    longitude: string
+    @IsNumber()
+    @Min(-180)
+    @Max(180)
+    longitude: number
 }

@@ -13,7 +13,7 @@ import { Pothole, PotholeSchema } from '@infrastructure/database/mongodb/entitie
         {
             provide: 'PotholeRepositoryInterface',
             useClass: PotholeRepository,
-        },
+        }
     ],
 })
 export class MapModule {}

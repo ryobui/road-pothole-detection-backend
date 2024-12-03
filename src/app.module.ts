@@ -11,6 +11,7 @@ import { ProxyRewriteImageMiddleware } from '@common/middlewares/proxy-rewrite-i
 import { AppController } from './app.controller';
 import { MapModule } from '@modules/map/map.module';
 import { loadConfigs } from './config/config.loader';
+import { LocationModule } from '@modules/location/location.module';
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { loadConfigs } from './config/config.loader';
         UserModule,
         MapModule,
         AuthModule,
+        LocationModule
     ],
     controllers: [AppController],
     providers: [

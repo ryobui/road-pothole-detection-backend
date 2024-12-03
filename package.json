@@ -21,6 +21,8 @@
         "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\""
     },
     "dependencies": {
+        "@googlemaps/polyline-codec": "^1.0.28",
+        "@mapbox/polyline": "^1.2.1",
         "@nest-middlewares/morgan": "^10.0.0",
         "@nestjs/cache-manager": "^2.2.2",
         "@nestjs/common": "^10.0.0",
@@ -33,7 +35,6 @@
         "@nestjs/platform-express": "^10.0.0",
         "@types/bcrypt": "^5.0.2",
         "@types/compression": "^1.7.5",
-        "nestjs-slack": "^1.4.1",
         "bcrypt": "^5.1.1",
         "cache-manager": "^5.7.6",
         "cache-manager-redis-yet": "^5.1.5",
@@ -44,9 +45,11 @@
         "googleapis-common": "^7.2.0",
         "http-proxy-middleware": "^3.0.3",
         "mongoose": "^8.7.1",
+        "nestjs-slack": "^1.4.1",
         "nodemailer": "^6.9.15",
         "passport-google-oauth20": "^2.0.0",
         "passport-jwt": "^4.0.1",
+        "polyline-encoded": "^0.0.9",
         "reflect-metadata": "^0.1.13",
         "rxjs": "^7.8.1",
         "typeorm": "^0.3.20"

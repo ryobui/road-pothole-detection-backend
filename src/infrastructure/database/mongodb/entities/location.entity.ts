@@ -4,18 +4,25 @@ import { HydratedDocument, Types } from 'mongoose';
 
 @Schema({
     collection: 'locations',
-    timestamps: true,
 })
 export class Location extends BaseEntity {
-    @Prop({required: true, type: String})
+    @Prop({ type: String, default: null })
+    name: string;
+
+    @Prop({ required: true, type: String })
     address: string;
 
-    @Prop({ required: true })
+    @Prop({ required: true, type: Number })
     latitude: number;
 
-    @Prop({ required: true })
+    @Prop({ required: true, type: Number })
     longitude: number;
 }
 
 export type LocationDocument = HydratedDocument<Location>;
 export const LocationSchema = SchemaFactory.createForClass(Location);
+
+LocationSchema.index({
+    name: 'text',
+    address: 'text',
+});

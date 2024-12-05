@@ -1,56 +1,57 @@
 name: Pull images and Run on VPS Development
 
 on:
-  workflow_run:
-    workflows: ["Build and Publish Docker Image Development"]
-    types:
-      - completed
-  
+    workflow_run:
+        workflows: ['Build and Publish Docker Image Development']
+        types:
+            - completed
+
 jobs:
-  deploy:
-    runs-on: [self-hosted, ryo]
+    deploy:
+        runs-on: [self-hosted, ryo]
 
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@v4.2.2
+        steps:
+            - name: 'Checkout code'
+              uses: actions/checkout@v4.2.2
 
-      - name: "Create '.env.production' file"
-        run: |
-          echo "PORT=${{ secrets.PORT }}" >> .env.production
-          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> .env.production
-          echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> .env.production
-          echo "GLOBAL_TOKEN_SECRET=${{ secrets.GLOBAL_TOKEN_SECRET }}" >> .env.production
-          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env.production
-          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env.production
-          echo "GOOGLE_REDIRECT_URL=${{ secrets.GOOGLE_REDIRECT_URL }}" >> .env.production
-          echo "GOOGLE_REFRESH_TOKEN=${{ secrets.GOOGLE_REFRESH_TOKEN }}" >> .env.production
-          echo "GOOGLE_USER_EMAIL=${{ secrets.GOOGLE_USER_EMAIL }}" >> .env.production
-          echo "GOOGLE_AUTH_CLIENT_ID=${{ secrets.GOOGLE_AUTH_CLIENT_ID }}" >> .env.production
-          echo "GOOGLE_AUTH_CLIENT_SECRET=${{ secrets.GOOGLE_AUTH_CLIENT_SECRET }}" >> .env.production
-          echo "GOOGLE_AUTH_REDIRECT_URL=${{ secrets.GOOGLE_AUTH_REDIRECT_URL }}" >> .env.production
-          echo "GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL=${{ secrets.GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL }}" >> .env.production
-          echo "GOOGLE_ACCOUNT_SERVICE_PRIVATE_KEY=${{ secrets.GOOGLE_ACCOUNT_SERVICE_PRIVATE_KEY }}" >> .env.production
-          echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env.production
-          echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env.production
-          echo "REDIS_TTL=${{ secrets.REDIS_TTL }}" >> .env.production
-          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env.production
-          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.production
-          echo "SLACK_WEBHOOK_API=${{ secrets.SLACK_WEBHOOK_API }}" >> .env.production
-          echo "NODE_ENV=DEVELOPMENT" >> .env.production
+            - name: "Create '.env.production' file"
+              run: |
+                  echo "PORT=${{ secrets.PORT }}" >> .env.production
+                  echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> .env.production
+                  echo "REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}" >> .env.production
+                  echo "GLOBAL_TOKEN_SECRET=${{ secrets.GLOBAL_TOKEN_SECRET }}" >> .env.production
+                  echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env.production
+                  echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env.production
+                  echo "GOOGLE_REDIRECT_URL=${{ secrets.GOOGLE_REDIRECT_URL }}" >> .env.production
+                  echo "GOOGLE_REFRESH_TOKEN=${{ secrets.GOOGLE_REFRESH_TOKEN }}" >> .env.production
+                  echo "GOOGLE_USER_EMAIL=${{ secrets.GOOGLE_USER_EMAIL }}" >> .env.production
+                  echo "GOOGLE_AUTH_CLIENT_ID=${{ secrets.GOOGLE_AUTH_CLIENT_ID }}" >> .env.production
+                  echo "GOOGLE_AUTH_CLIENT_SECRET=${{ secrets.GOOGLE_AUTH_CLIENT_SECRET }}" >> .env.production
+                  echo "GOOGLE_AUTH_REDIRECT_URL=${{ secrets.GOOGLE_AUTH_REDIRECT_URL }}" >> .env.production
+                  echo "GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL=${{ secrets.GOOGLE_ACCOUNT_SERVICE_CLIENT_EMAIL }}" >> .env.production
+                  echo "GOOGLE_ACCOUNT_SERVICE_PRIVATE_KEY=${{ secrets.GOOGLE_ACCOUNT_SERVICE_PRIVATE_KEY }}" >> .env.production
+                  echo "GOOGLE_DRIVE_FOLDER_ID=${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}" >> .env.production
+                  echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env.production
+                  echo "REDIS_TTL=${{ secrets.REDIS_TTL }}" >> .env.production
+                  echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env.production
+                  echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.production
+                  echo "SLACK_WEBHOOK_API=${{ secrets.SLACK_WEBHOOK_API }}" >> .env.production
+                  echo "TOKEN_OPEN_ROUTE_SERVICE=${{ secrets.TOKEN_OPEN_ROUTE_SERVICE }}" >> .env.production
+                  echo "NODE_ENV=DEVELOPMENT" >> .env.production
 
-      - name: "Run pull images from Docker Hub"
-        working-directory: docker/
-        run: sudo IMAGE_NAME=buithiendev/road-pothole-detection-backend-dev:latest docker-compose pull
+            - name: 'Run pull images from Docker Hub'
+              working-directory: docker/
+              run: sudo IMAGE_NAME=buithiendev/road-pothole-detection-backend-dev:latest docker-compose pull
 
-      - name: "Run docker-compose file"
-        working-directory: docker/
-        run: sudo IMAGE_NAME=buithiendev/road-pothole-detection-backend-dev:latest docker-compose up --force-recreate -d
+            - name: 'Run docker-compose file'
+              working-directory: docker/
+              run: sudo IMAGE_NAME=buithiendev/road-pothole-detection-backend-dev:latest docker-compose up --force-recreate -d
 
-      - name: "Remove images with tag <none>"
-        run: sudo docker image prune -f
-      
-      - name: "Docker images"
-        run: sudo docker images
+            - name: 'Remove images with tag <none>'
+              run: sudo docker image prune -f
 
-      - name: "Remove '.env.production' file"
-        run: rm -f .env.production
+            - name: 'Docker images'
+              run: sudo docker images
+
+            - name: "Remove '.env.production' file"
+              run: rm -f .env.production

@@ -6,13 +6,14 @@ import { BodyDirection } from './open-route-service/types/body-direction.type';
 import { RouteProcessor } from './open-route-service/route-processor';
 import { decode, encode } from '@googlemaps/polyline-codec';
 import { BodyDirectionDto } from './dtos/direction.dto';
-import { LocationRepositoryInterface } from '@infrastructure/database/mongodb/repositories/interfaces/location.repository.interface';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MapService {
     constructor(
         @Inject('PotholeRepositoryInterface')
         private readonly potholeRepository: PotholeRepositoryInterface,
+        private readonly configService: ConfigService,
     ) {}
 
     async createPothole(createPotholeData: CreatePotholeDto) {
@@ -42,7 +43,7 @@ export class MapService {
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8',
                         Accept: 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-                        Authorization: '5b3ce3597851110001cf6248a39a5d4a4d1e4f438454ffdd4e7b2c5a',
+                        Authorization: this.configService.get('tokenORS'),
                     },
                     body: {
                         coordinates: [

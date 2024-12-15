@@ -17,7 +17,7 @@ export class MapService {
     ) {}
 
     async createPothole(createPotholeData: CreatePotholeDto) {
-        const { longitude, latitude } = createPotholeData;
+        const { longitude, latitude, severity } = createPotholeData;
         const potholeExisting = await this.potholeRepository.findOneByCondition({
             latitude,
             longitude,
@@ -26,6 +26,7 @@ export class MapService {
         const newPothole = await this.potholeRepository.create({
             latitude,
             longitude,
+            severity,
         });
         return newPothole;
     }

@@ -13,7 +13,10 @@ export class Pothole extends BaseEntity {
     @Prop({ required: true })
     longitude: number;
 
-    @Prop({type: String, default: null})
+    @Prop({ type: String, default: null })
+    severity: string;
+
+    @Prop({ type: String, default: null })
     photo: string;
 }
 

@@ -43,6 +43,7 @@ export class GmailService {
             await transport.sendMail(mailOptions);
             return true;
         } catch (error) {
+            console.log(error);
             throw new InternalServerErrorException('Error sending email');
         }
     }
